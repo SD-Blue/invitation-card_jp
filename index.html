@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Đám cưới Sỹ & Dung</title>
+    <title>シー&ズンの結婚式</title>
     <meta content="Chào mừng bạn đến với đám cưới của Văn Sỹ & Thùy Dung" name="description" />
     <meta property="og:image" content="images/pic5.jpg" />
     <meta property="fb:admins" content="Soonkwon.Justin.Hwang" />
@@ -35,7 +35,6 @@
     />
     <link href="css/ekko-lightbox.css" rel="stylesheet" />
     <link href="styles/main.css" rel="stylesheet" />
-    <link href="css/language-toggle.css" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css?family=Gamja+Flower|Gugi|Noto+Serif+KR|Stylish|Sunflower:300"
       rel="stylesheet"
@@ -46,10 +45,6 @@
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       rel="stylesheet"
     />
-    <script
-      src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"
-      type="text/javascript"
-    ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.js"
       type="text/javascript"
@@ -962,6 +957,162 @@
         display: none;
       }
 
+      /* ========== IMAGE LIGHTBOX MODAL ========== */
+      .lightbox-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .lightbox-modal.active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 1;
+      }
+
+      .lightbox-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .lightbox-image-container {
+        position: relative;
+        overflow: hidden;
+        cursor: grab;
+        touch-action: none;
+        max-width: 100%;
+        max-height: 90vh;
+      }
+
+      .lightbox-image-container.grabbing {
+        cursor: grabbing;
+      }
+
+      .lightbox-image {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        user-select: none;
+        -webkit-user-select: none;
+        display: block;
+      }
+
+      /* Close button */
+      .lightbox-close {
+        position: fixed;
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+      }
+
+      .lightbox-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(90deg);
+      }
+
+      /* Zoom controls */
+      .lightbox-controls {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 15px;
+        z-index: 10001;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 20px;
+        border-radius: 30px;
+        backdrop-filter: blur(10px);
+      }
+
+      .lightbox-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .lightbox-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      .lightbox-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Zoom level indicator */
+      .zoom-indicator {
+        color: white;
+        font-size: 14px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        font-family: 'Dosis', sans-serif;
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        .lightbox-close {
+          top: 10px;
+          right: 10px;
+          font-size: 30px;
+          width: 40px;
+          height: 40px;
+        }
+
+        .lightbox-controls {
+          bottom: 20px;
+          padding: 8px 15px;
+          gap: 10px;
+        }
+
+        .lightbox-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 18px;
+        }
+
+        .zoom-indicator {
+          font-size: 12px;
+          padding: 0 10px;
+        }
+      }
+
       /* ========== ORIGINAL COUNTDOWN ========== */
       .countdown-container {
         display: flex;
@@ -1599,9 +1750,6 @@
   </head>
 
   <body id="top">
-    <!-- Language Toggle Button -->
-    <button id="language-toggle" onclick="toggleLanguage()" title="Switch language">日本語</button>
-
     <!-- Curtain Effect -->
     <div class="curtain-overlay" id="curtainOverlay">
       <div class="curtain curtain-left">
@@ -1620,8 +1768,8 @@
       <!-- Chữ Hỉ và thông điệp - NẰM NGOÀI CẢ 2 MÀN để z-index cao nhất -->
       <div class="xi-character">囍</div>
       <div class="wedding-message">
-        <h1>SỸ & DUNG</h1>
-        <h2>Trăm Năm Hạnh Phúc</h2>
+        <h1>SY & DUNG</h1>
+        <h2>百年の幸福</h2>
         <div class="date">17 • 01 • 2026</div>
       </div>
     </div>
@@ -1656,7 +1804,7 @@
                 class="h2 mt-5 ww-title"
                 style="font-family: 'Gugi', cursive; font-size: 1em"
               >
-                | CHÚNG TÔI SẮP KẾT HÔN |
+                | 私たちは結婚します |
               </p>
               <p
                 class="h2 mt-5 ww-title"
@@ -1666,9 +1814,9 @@
                   letter-spacing: -1px;
                 "
               >
-                <b style="font-size: 1.4em">2026. 01. 17. THỨ 7 11:00 AM</b>
+                <b style="font-size: 1.4em">2026年1月17日（土）午前11時 AM</b>
                 <br />
-                <br />PHÚ VINH - TP HUẾ
+                <br />フーヴィン - フエ市
               </p>
             </div>
           </div>
@@ -1693,17 +1841,17 @@
               >
                 <ul class="navbar-nav ml-auto">
                   <li class="nav-item">
-                    <a class="nav-link smooth-scroll" href="#home" data-i18n="nav_home">Trang chủ</a>
+                    <a class="nav-link smooth-scroll" href="#home">ホーム</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link smooth-scroll" href="#couple" data-i18n="nav_couple">Cô dâu & Chú rể</a>
+                    <a class="nav-link smooth-scroll" href="#couple">新郎新婦</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link smooth-scroll" href="#events" data-i18n="nav_events">Sự kiện</a>
+                    <a class="nav-link smooth-scroll" href="#events">イベント</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link smooth-scroll" href="#gallery" data-i18n="nav_gallery"
-                      >Thư viện ảnh</a
+                    <a class="nav-link smooth-scroll" href="#gallery"
+                      >フォトギャラリー</a
                     >
                   </li>
                 </ul>
@@ -1716,9 +1864,8 @@
             <h2
               class="h1 text-center pb-5 ww-title fade-in-up"
               style="font-family: 'Great Vibes', cursive; font-size: 3.5em; color: #FF5FC5;"
-              data-i18n="couple_subtitle"
             >
-              Một hành trình mới bắt đầu từ hôm nay
+              今日から新しい旅が始まります
             </h2>
 
             <!-- Groom Section -->
@@ -1730,15 +1877,15 @@
                   </div>
                 </div>
                 <div class="couple-info">
-                  <div class="couple-label" data-i18n="groom_family">NHÀ TRAI:</div>
+                  <div class="couple-label">新郎側:</div>
                   <div class="couple-parents">
-                    <p><span data-i18n="mr">ÔNG:</span> NGUYỄN DỎ</p>
-                    <p><span data-i18n="mrs">BÀ:</span> HUỲNH THỊ XÊ</p>
+                    <p>父: NGUYEN DO</p>
+                    <p>母: HUYNH THI XE</p>
                   </div>
                   <div class="couple-avatar">
                     <img src="images/groom-avatar.jpg" alt="Chú rể avatar" onerror="this.style.display='none'" />
                   </div>
-                  <div class="couple-name-script">Văn Sỹ</div>
+                  <div class="couple-name-script">Van Sy</div>
                 </div>
               </div>
             </div>
@@ -1747,15 +1894,15 @@
             <div class="couple-card bride-card slide-in-right">
               <div class="couple-content reverse">
                 <div class="couple-info">
-                  <div class="couple-label" data-i18n="bride_family">NHÀ GÁI:</div>
+                  <div class="couple-label">新婦側:</div>
                   <div class="couple-parents">
-                    <p><span data-i18n="mr">ÔNG:</span> NGUYỄN VĂN HÀO</p>
-                    <p><span data-i18n="mrs">BÀ:</span> HOÀNG THỊ DẬU</p>
+                    <p>父: NGUYEN VAN HAO</p>
+                    <p>母: HOANG THI DAU</p>
                   </div>
                   <div class="couple-avatar">
                     <img src="images/bride-avatar.jpg" alt="Cô dâu avatar" onerror="this.style.display='none'" />
                   </div>
-                  <div class="couple-name-script">Thùy Dung</div>
+                  <div class="couple-name-script">Thuy Dung</div>
                 </div>
                 <div class="couple-image-container">
                   <div class="image-frame">
@@ -1772,27 +1919,27 @@
               class="h1 text-center pb-5 ww-title fade-in-up"
               style="font-family: 'Great Vibes', cursive; font-size: 3.5em; color: #FF5FC5;"
             >
-              <p data-i18n="events_title">Thư mời</p>
-              <p data-i18n="events_subtitle">Tham dự lễ cưới của Sỹ và Dung </p>
+              <p>招待状</p>
+              <p>シーとズンの結婚式にご参加ください </p>
             </h2>
 
             <!-- Groom's Wedding Reception -->
             <div class="event-card slide-in-from-left">
               <div class="event-header">
-                <h3 class="event-title" data-i18n="event_groom_reception">TIỆC CƯỚI NHÀ TRAI</h3>
+                <h3 class="event-title">新郎側披露宴</h3>
               </div>
               <div class="event-details">
                 <div class="event-time">
                   <div class="time-large">11:30</div>
-                  <div class="day-text" data-i18n="thu_bay">Thứ Bảy</div>
+                  <div class="day-text">土曜日</div>
                 </div>
                 <div class="event-date">
                   <div class="date-parts">
-                    <span class="month" data-i18n="month_1">Tháng 1</span>
+                    <span class="month">1月</span>
                     <span class="date-number">17</span>
                     <span class="year">2026</span>
                   </div>
-                  <div class="lunar-date" data-i18n="lunar_date_29">(Tức ngày 29, tháng 11, năm Ất Tỵ)</div>
+                  <div class="lunar-date">(旧暦 11月29日、乙巳年)</div>
                 </div>
               </div>
             </div>
@@ -1800,20 +1947,20 @@
             <!-- Bride's Wedding Reception -->
             <div class="event-card slide-in-from-right">
               <div class="event-header">
-                <h3 class="event-title" data-i18n="event_bride_reception">TIỆC CƯỚI NHÀ GÁI</h3>
+                <h3 class="event-title">新婦側披露宴</h3>
               </div>
               <div class="event-details">
                 <div class="event-time">
-                  <div class="time-large">10:30</div>
-                  <div class="day-text" data-i18n="thu_tu">Thứ Tư</div>
+                  <div class="time-large">10:00</div>
+                  <div class="day-text">水曜日</div>
                 </div>
                 <div class="event-date">
                   <div class="date-parts">
-                    <span class="month" data-i18n="month_1">Tháng 1</span>
+                    <span class="month">1月</span>
                     <span class="date-number">14</span>
                     <span class="year">2026</span>
                   </div>
-                  <div class="lunar-date" data-i18n="lunar_date_26">(Tức ngày 26, tháng 11, năm Ất Tỵ)</div>
+                  <div class="lunar-date">(旧暦 11月26日、乙巳年)</div>
                 </div>
               </div>
             </div>
@@ -1824,7 +1971,7 @@
                 <img src="images/pic16.jpg" alt="Wedding ceremony photo 1" />
               </div>
               <div class="photo-item photo-center">
-                <img src="images/pic17.JPG" alt="Wedding ceremony photo 2" />
+                <img src="images/pic17.jpg" alt="Wedding ceremony photo 2" />
               </div>
               <div class="photo-item photo-side">
                 <img src="images/pic18.jpg" alt="Wedding ceremony photo 3" />
@@ -1837,41 +1984,41 @@
                 <div class="couple-icon">
                   <img src="images/wedding-couple-icon.png" alt="Wedding couple" onerror="this.innerHTML='👰🤵'" />
                 </div>
-                <h3 class="event-title" data-i18n="event_wedding_ceremony">LỄ THÀNH HÔN</h3>
+                <h3 class="event-title">結婚式</h3>
               </div>
               <div class="event-details">
                 <div class="event-time">
                   <div class="time-large">11:00</div>
-                  <div class="day-text" data-i18n="thu_7">Thứ 7</div>
+                  <div class="day-text">土曜日</div>
                 </div>
                 <div class="event-date">
                   <div class="date-parts">
-                    <span class="month" data-i18n="month_1">Tháng 1</span>
+                    <span class="month">1月</span>
                     <span class="date-number">17</span>
                     <span class="year">2026</span>
                   </div>
-                  <div class="lunar-date" data-i18n="lunar_date_29">(Tức ngày 29, tháng 11, năm Ất Tỵ)</div>
+                  <div class="lunar-date">(旧暦 11月29日、乙巳年)</div>
                 </div>
               </div>
 
               <div class="countdown-wedding">
-                <h4 data-i18n="ceremony_will_start">Hôn lễ sẽ diễn ra sau:</h4>
+                <h4>式まで:</h4>
                 <div class="countdown-display">
                   <div class="count-item">
                     <span class="count-num" id="days2">05</span>
-                    <span class="count-label" data-i18n="days">Ngày</span>
+                    <span class="count-label">日</span>
                   </div>
                   <div class="count-item">
                     <span class="count-num" id="hours2">02</span>
-                    <span class="count-label" data-i18n="hours">Giờ</span>
+                    <span class="count-label">時</span>
                   </div>
                   <div class="count-item">
                     <span class="count-num" id="minutes2">20</span>
-                    <span class="count-label" data-i18n="minutes">Phút</span>
+                    <span class="count-label">分</span>
                   </div>
                   <div class="count-item">
                     <span class="count-num" id="seconds2">01</span>
-                    <span class="count-label" data-i18n="seconds">Giây</span>
+                    <span class="count-label">秒</span>
                   </div>
                 </div>
               </div>
@@ -1884,41 +2031,41 @@
                 <div class="couple-icon">
                   <img src="images/wedding-couple-icon1.png" alt="Wedding couple" onerror="this.innerHTML='👰🤵'" />
                 </div>
-                <h3 class="event-title" data-i18n="event_vu_quy">LỄ VU QUY</h3>
+                <h3 class="event-title">ヴークイの儀式</h3>
               </div>
               <div class="event-details">
                 <div class="event-time">
                   <div class="time-large">08:00</div>
-                  <div class="day-text" data-i18n="thu_4">Thứ 4</div>
+                  <div class="day-text">水曜日</div>
                 </div>
                 <div class="event-date">
                   <div class="date-parts">
-                    <span class="month" data-i18n="month_1">Tháng 1</span>
+                    <span class="month">1月</span>
                     <span class="date-number">14</span>
                     <span class="year">2026</span>
                   </div>
-                  <div class="lunar-date" data-i18n="lunar_date_26">(Tức ngày 26, tháng 11, năm Ất Tỵ)</div>
+                  <div class="lunar-date">(旧暦 11月26日、乙巳年)</div>
                 </div>
               </div>
 
               <div class="countdown-wedding">
-                <h4 data-i18n="ceremony_will_start">Hôn lễ sẽ diễn ra sau:</h4>
+                <h4>式まで:</h4>
                 <div class="countdown-display">
                   <div class="count-item">
                     <span class="count-num" id="days3">05</span>
-                    <span class="count-label" data-i18n="days">Ngày</span>
+                    <span class="count-label">日</span>
                   </div>
                   <div class="count-item">
                     <span class="count-num" id="hours3">02</span>
-                    <span class="count-label" data-i18n="hours">Giờ</span>
+                    <span class="count-label">時</span>
                   </div>
                   <div class="count-item">
                     <span class="count-num" id="minutes3">20</span>
-                    <span class="count-label" data-i18n="minutes">Phút</span>
+                    <span class="count-label">分</span>
                   </div>
                   <div class="count-item">
                     <span class="count-num" id="seconds3">01</span>
-                    <span class="count-label" data-i18n="seconds">Giây</span>
+                    <span class="count-label">秒</span>
                   </div>
                 </div>
               </div>
@@ -1934,14 +2081,13 @@
             <h2
               class="h1 text-center pb-5 ww-title fade-in-up"
               style="font-family: 'Great Vibes', cursive; font-size: 3.5em; color: #FF5FC5;"
-              data-i18n="location_title"
             >
-              🗺️ Địa điểm tổ chức
+              🗺️ 会場
             </h2>
 
             <!-- Nhà Trai -->
             <div class="location-card slide-in-from-left">
-              <h3 class="location-title" data-i18n="location_groom">NHÀ TRAI</h3>
+              <h3 class="location-title">新郎側</h3>
               <p class="location-address">
                 THÔN 5 - PHÚ VINH - TP HUẾ
               </p>
@@ -1950,14 +2096,14 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d1609.0310375599238!2d107.79602511244978!3d16.42774772297371!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTbCsDI1JzQxLjAiTiAxMDfCsDQ3JzQ5LjEiRQ!5e0!3m2!1svi!2sjp!4v1765870574168!5m2!1svi!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
 
-              <a href="https://maps.app.goo.gl/RGufuLHo6NsUbnSN8" target="_blank" class="direction-btn" data-i18n="view_directions">
-                XEM CHỈ ĐƯỜNG
+              <a href="https://maps.app.goo.gl/RGufuLHo6NsUbnSN8" target="_blank" class="direction-btn">
+                道順を見る
               </a>
             </div>
 
             <!-- Nhà Gái -->
             <div class="location-card slide-in-from-right">
-              <h3 class="location-title" data-i18n="location_bride">NHÀ GÁI</h3>
+              <h3 class="location-title">新婦側</h3>
               <p class="location-address">
                 ĐOÀI ĐÔNG - P VỊ KHÊ - TỈNH NINH BÌNH
               </p>
@@ -1966,8 +2112,8 @@
                 <iframe src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d1322.2827822598167!2d106.20098047729364!3d20.38369436246042!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjDCsDIzJzAxLjciTiAxMDbCsDEyJzA2LjgiRQ!5e0!3m2!1svi!2sjp!4v1765870340346!5m2!1svi!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
 
-              <a href="https://maps.app.goo.gl/aSsKtuJSrzPweBxT8" target="_blank" class="direction-btn" data-i18n="view_directions">
-                XEM CHỈ ĐƯỜNG
+              <a href="https://maps.app.goo.gl/aSsKtuJSrzPweBxT8" target="_blank" class="direction-btn">
+                道順を見る
               </a>
             </div>
           </div>
@@ -1979,9 +2125,8 @@
               <h2
                 class="h1 text-center pb-5 ww-title fade-in-up"
                 style="font-family: 'Great Vibes', cursive; font-size: 3.5em; color: #FF5FC5;"
-                data-i18n="gallery_title"
               >
-                Love Story
+                ラブストーリー
               </h2>
               <div class="ww-gallery">
                 <div class="gallery-grid">
@@ -2006,7 +2151,7 @@
                     <div class="gallery-item slide-right" data-groups='["party","wedding"]'>
                       <a data-gallery="ww-gallery" data-toggle="lightbox">
                         <div class="image-wrapper">
-                          <img alt="Gallery Pic 10" class="img-fluid" src="images/pic10.JPG" />
+                          <img alt="Gallery Pic 10" class="img-fluid" src="images/pic10.jpg" />
                           <div class="image-overlay"></div>
                         </div>
                       </a>
@@ -2015,7 +2160,7 @@
 
                   <!-- Love Quote 1 -->
                   <div class="love-quote">
-                    <p class="love-quote-text" data-i18n="quote_1">"Tình yêu không làm cho thế giới quay tròn. Tình yêu là thứ làm cho chuyến đi đáng giá."</p>
+                    <p class="love-quote-text">"愛は世界を回転させるものではありません。愛は旅を価値あるものにするものです。"</p>
                   </div>
 
                   <!-- Row 2: 2 ảnh bằng nhau (pic4, pic5) -->
@@ -2040,7 +2185,7 @@
 
                   <!-- Love Quote 2 -->
                   <div class="love-quote">
-                    <p class="love-quote-text" data-i18n="quote_2">"Được ai đó yêu sâu đậm sẽ mang lại cho bạn sức mạnh, trong khi yêu ai đó sâu đậm sẽ cho bạn can đảm."</p>
+                    <p class="love-quote-text">"誰かに深く愛されることは力を与え、誰かを深く愛することは勇気を与えます。"</p>
                   </div>
 
                   <!-- Row 3: 3 ảnh bằng nhau (pic6, pic7, pic8) -->
@@ -2048,7 +2193,7 @@
                     <div class="gallery-item slide-left" data-groups='["party","wedding"]'>
                       <a data-gallery="ww-gallery" data-toggle="lightbox">
                         <div class="image-wrapper">
-                          <img alt="Gallery Pic 6" class="img-fluid" src="images/pic6.JPG" />
+                          <img alt="Gallery Pic 6" class="img-fluid" src="images/pic6.jpg" />
                           <div class="image-overlay"></div>
                         </div>
                       </a>
@@ -2056,7 +2201,7 @@
                     <div class="gallery-item fade-center" data-groups='["party","wedding"]'>
                       <a data-gallery="ww-gallery" data-toggle="lightbox">
                         <div class="image-wrapper">
-                          <img alt="Gallery Pic 11" class="img-fluid" src="images/pic11.JPG" />
+                          <img alt="Gallery Pic 11" class="img-fluid" src="images/pic11.jpg" />
                           <div class="image-overlay"></div>
                         </div>
                       </a>
@@ -2064,7 +2209,7 @@
                     <div class="gallery-item slide-right" data-groups='["party","wedding"]'>
                       <a data-gallery="ww-gallery" data-toggle="lightbox">
                         <div class="image-wrapper">
-                          <img alt="Gallery Pic 12" class="img-fluid" src="images/pic12.JPG" />
+                          <img alt="Gallery Pic 12" class="img-fluid" src="images/pic12.jpg" />
                           <div class="image-overlay"></div>
                         </div>
                       </a>
@@ -2073,7 +2218,7 @@
 
                   <!-- Love Quote 3 -->
                   <div class="love-quote">
-                    <p class="love-quote-text" data-i18n="quote_3">"Tình yêu chân thành nhất là tình yêu không điều kiện, không đòi hỏi, chỉ cho đi."</p>
+                    <p class="love-quote-text">"最も真実な愛は、条件なく、要求せず、ただ与える愛です。"</p>
                   </div>
 
                   <!-- Row 4: 1 ảnh to bên trái, 2 ảnh nhỏ bên phải (pic9, pic10, pic11) -->
@@ -2106,7 +2251,7 @@
 
                   <!-- Love Quote 4 -->
                   <div class="love-quote">
-                    <p class="love-quote-text" data-i18n="quote_4">"Trong tất cả những gì trái tim tôi yêu thương, em luôn là điều tuyệt vời nhất."</p>
+                    <p class="love-quote-text">"私の心が愛するすべてのものの中で、あなたは常に最も素晴らしいものです。"</p>
                   </div>
 
                   <!-- Row 5: 1 ảnh to full width (pic12, pic13) -->
@@ -2114,7 +2259,7 @@
                     <div class="gallery-item fade-center" data-groups='["party","wedding"]'>
                       <a data-gallery="ww-gallery" data-toggle="lightbox">
                         <div class="image-wrapper">
-                          <img alt="Gallery Pic 9" class="img-fluid" src="images/pic9.JPG" />
+                          <img alt="Gallery Pic 9" class="img-fluid" src="images/pic9.jpg" />
                           <div class="image-overlay"></div>
                         </div>
                       </a>
@@ -2135,24 +2280,23 @@
             <div class="container">
               <div class="col text-center mb-5">
                 <h6 style="font-family: 'Noto Serif KR', serif; color: #C2185B;">
-                  Khi ở bên nhau, chúng tôi là chính mình nhất<br />
-                  và cùng nhau vẽ nên những ước mơ về tương lai.<br /><br />
+                共にいるとき、私たちは最も自然な自分でいられ、<br />
+                そして未来への夢を一緒に描いてきました。<br /><br />
 
-                  Giống như kỳ nghỉ hè đáng mong đợi,<br />
-                  chúng tôi chuẩn bị bắt đầu hành trình cuộc đời cùng nhau.<br /><br />
+                心待ちにしていた夏休みのように、<br />
+                私たちはこれから人生の旅路を共に歩み始めます。<br /><br />
 
-                  Chúng tôi trân trọng kính mời quý khách đến tham dự<br />
-                  và chúc phúc cho chúng tôi trong ngày trọng đại này.<br />
-
-                  <br /><br />
+                この大切な日に、<br />
+                ぜひご臨席いただき、<br />
+                私たちに温かい祝福を賜りますよう、心よりお願い申し上げます。<br /><br />
                 </h6>
+
                 <h7
                   class="h7 text-center pb-3 ww-title"
                   style="font-family: 'Noto Serif KR', serif; color: #C2185B;"
-                  data-i18n="gift_title"
-                  >Quà mừng đám cưới</h7
+                  >お祝い</h7
                 >
-                <h5 style="font-family: 'Noto Serif KR', serif; color: #C2185B;" data-i18n="gift_bank">
+                <h5 style="font-family: 'Noto Serif KR', serif; color: #C2185B;">
                   Bank: @Thùy-Dung
                 </h5>
               </div>
@@ -2668,9 +2812,246 @@
           }
         });
       }
-    </script>
 
-    <!-- Language Toggle Script -->
-    <script src="js/i18n.js"></script>
+      // ===== IMAGE LIGHTBOX FUNCTIONALITY =====
+      class ImageLightbox {
+        constructor() {
+          this.currentZoom = 1;
+          this.minZoom = 1;
+          this.maxZoom = 3;
+          this.zoomStep = 0.5;
+          this.isDragging = false;
+          this.startX = 0;
+          this.startY = 0;
+          this.translateX = 0;
+          this.translateY = 0;
+          this.currentTranslateX = 0;
+          this.currentTranslateY = 0;
+
+          this.createModal();
+          this.attachEventListeners();
+        }
+
+        createModal() {
+          // Create modal HTML
+          const modalHTML = `
+            <div class="lightbox-modal" id="lightboxModal">
+              <button class="lightbox-close" id="lightboxClose">&times;</button>
+              <div class="lightbox-content">
+                <div class="lightbox-image-container" id="imageContainer">
+                  <img class="lightbox-image" id="lightboxImage" src="" alt="">
+                </div>
+              </div>
+              <div class="lightbox-controls">
+                <button class="lightbox-btn" id="zoomOut" title="Zoom Out">-</button>
+                <div class="zoom-indicator" id="zoomIndicator">100%</div>
+                <button class="lightbox-btn" id="zoomIn" title="Zoom In">+</button>
+                <button class="lightbox-btn" id="resetZoom" title="Reset">⟲</button>
+              </div>
+            </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+          // Get elements
+          this.modal = document.getElementById('lightboxModal');
+          this.image = document.getElementById('lightboxImage');
+          this.imageContainer = document.getElementById('imageContainer');
+          this.closeBtn = document.getElementById('lightboxClose');
+          this.zoomInBtn = document.getElementById('zoomIn');
+          this.zoomOutBtn = document.getElementById('zoomOut');
+          this.resetBtn = document.getElementById('resetZoom');
+          this.zoomIndicator = document.getElementById('zoomIndicator');
+        }
+
+        attachEventListeners() {
+          // Gallery images click
+          const galleryImages = document.querySelectorAll('.gallery-item img, .ceremony-photos-grid img');
+          galleryImages.forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', (e) => {
+              e.preventDefault();
+              this.openLightbox(img.src);
+            });
+          });
+
+          // Close button
+          this.closeBtn.addEventListener('click', () => this.closeLightbox());
+
+          // Click outside image to close
+          this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) {
+              this.closeLightbox();
+            }
+          });
+
+          // Escape key to close
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+              this.closeLightbox();
+            }
+          });
+
+          // Zoom controls
+          this.zoomInBtn.addEventListener('click', () => this.zoomIn());
+          this.zoomOutBtn.addEventListener('click', () => this.zoomOut());
+          this.resetBtn.addEventListener('click', () => this.resetZoom());
+
+          // Mouse wheel zoom
+          this.imageContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+              this.zoomIn();
+            } else {
+              this.zoomOut();
+            }
+          }, { passive: false });
+
+          // Drag functionality - Mouse events
+          this.imageContainer.addEventListener('mousedown', (e) => this.startDrag(e));
+          this.imageContainer.addEventListener('mousemove', (e) => this.drag(e));
+          this.imageContainer.addEventListener('mouseup', () => this.endDrag());
+          this.imageContainer.addEventListener('mouseleave', () => this.endDrag());
+
+          // Drag functionality - Touch events
+          this.imageContainer.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+          this.imageContainer.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
+          this.imageContainer.addEventListener('touchend', () => this.endDrag());
+
+          // Pinch to zoom on mobile
+          let initialDistance = 0;
+          let initialZoom = 1;
+
+          this.imageContainer.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+              e.preventDefault();
+              initialDistance = this.getDistance(e.touches[0], e.touches[1]);
+              initialZoom = this.currentZoom;
+            }
+          }, { passive: false });
+
+          this.imageContainer.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+              e.preventDefault();
+              const currentDistance = this.getDistance(e.touches[0], e.touches[1]);
+              const scale = currentDistance / initialDistance;
+              this.setZoom(initialZoom * scale);
+            }
+          }, { passive: false });
+        }
+
+        getDistance(touch1, touch2) {
+          const dx = touch1.clientX - touch2.clientX;
+          const dy = touch1.clientY - touch2.clientY;
+          return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        openLightbox(imageSrc) {
+          this.image.src = imageSrc;
+          this.modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          this.resetZoom();
+        }
+
+        closeLightbox() {
+          this.modal.classList.remove('active');
+          document.body.style.overflow = '';
+          this.resetZoom();
+        }
+
+        zoomIn() {
+          if (this.currentZoom < this.maxZoom) {
+            this.currentZoom = Math.min(this.currentZoom + this.zoomStep, this.maxZoom);
+            this.updateZoom();
+          }
+        }
+
+        zoomOut() {
+          if (this.currentZoom > this.minZoom) {
+            this.currentZoom = Math.max(this.currentZoom - this.zoomStep, this.minZoom);
+            this.updateZoom();
+          }
+        }
+
+        setZoom(zoom) {
+          this.currentZoom = Math.max(this.minZoom, Math.min(zoom, this.maxZoom));
+          this.updateZoom();
+        }
+
+        resetZoom() {
+          this.currentZoom = 1;
+          this.translateX = 0;
+          this.translateY = 0;
+          this.currentTranslateX = 0;
+          this.currentTranslateY = 0;
+          this.updateZoom();
+        }
+
+        updateZoom() {
+          this.image.style.transform = `scale(${this.currentZoom}) translate(${this.translateX}px, ${this.translateY}px)`;
+          this.zoomIndicator.textContent = Math.round(this.currentZoom * 100) + '%';
+
+          // Enable/disable drag based on zoom
+          if (this.currentZoom > 1) {
+            this.imageContainer.style.cursor = 'grab';
+          } else {
+            this.imageContainer.style.cursor = 'default';
+            this.translateX = 0;
+            this.translateY = 0;
+            this.currentTranslateX = 0;
+            this.currentTranslateY = 0;
+          }
+        }
+
+        startDrag(e) {
+          if (this.currentZoom <= 1) return;
+
+          this.isDragging = true;
+          this.imageContainer.classList.add('grabbing');
+
+          const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+          const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+          this.startX = clientX - this.currentTranslateX;
+          this.startY = clientY - this.currentTranslateY;
+        }
+
+        drag(e) {
+          if (!this.isDragging || this.currentZoom <= 1) return;
+
+          e.preventDefault();
+
+          const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+          const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+          this.currentTranslateX = clientX - this.startX;
+          this.currentTranslateY = clientY - this.startY;
+
+          // Calculate boundaries to prevent dragging too far
+          const maxTranslate = 200 * this.currentZoom;
+          this.currentTranslateX = Math.max(-maxTranslate, Math.min(maxTranslate, this.currentTranslateX));
+          this.currentTranslateY = Math.max(-maxTranslate, Math.min(maxTranslate, this.currentTranslateY));
+
+          this.translateX = this.currentTranslateX / this.currentZoom;
+          this.translateY = this.currentTranslateY / this.currentZoom;
+
+          this.image.style.transform = `scale(${this.currentZoom}) translate(${this.translateX}px, ${this.translateY}px)`;
+        }
+
+        endDrag() {
+          this.isDragging = false;
+          this.imageContainer.classList.remove('grabbing');
+        }
+      }
+
+      // Initialize lightbox when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          new ImageLightbox();
+        });
+      } else {
+        new ImageLightbox();
+      }
+    </script>
   </body>
 </html>

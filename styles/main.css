@@ -9751,7 +9751,7 @@ body {
 
 /* Home Page Style */
 .ww-home-page {
-    background: url("../images/main-background.JPG") no-repeat center center;
+    background: url("../images/main-background.jpg") no-repeat center center;
     background-size: cover;
     background-position: 50%;
     height: 100vh;
@@ -9773,7 +9773,6 @@ body {
     max-width: 600px;
     text-align: center;
     z-index: 999;
-    color: #ff69b4;
 }
 
 .ww-home-page .ww-wedding-announcement img {
@@ -9790,7 +9789,6 @@ body {
 
 .ww-home-page .ww-wedding-announcement .ww-couple-name {
     font-size: 70px;
-    color: #e83e8c;
 }
 
 @media (max-width: 576px) {
